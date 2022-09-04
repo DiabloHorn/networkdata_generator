@@ -17,3 +17,8 @@ The following is example output
 {'srchost': '92.9.15.246', 'dsthost': '118.220.234.36', 'srcport': 57648, 'dstport': 3389}
 {'srchost': '92.9.15.67', 'dsthost': '118.220.234.24', 'srcport': 64662, 'dstport': 445}
 ```
+
+# PyTest
+You can run the tests like this:
+
+```python -m pytest tests/```

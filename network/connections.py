@@ -192,7 +192,7 @@ class VlanIPv4Connections:
         return self._dstports[rnd]
 
     def get_host_connections(self) -> dict:
-        """Generates the quadruple combination of source host, destination host, source port, destination port
+        """Generates the connections for the vlan hosts
 
         Returns:
             dict: A dict of connections containing srchost,dsthost,srcport,dstport
