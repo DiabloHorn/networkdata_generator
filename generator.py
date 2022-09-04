@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-import sys
-import random
+"""CLI interface to generate network data
+"""
 import itertools
-import logging
+
 
 from network.connections import vlan_ipv4_object
 from network.connections import vlan_ipv4_connections
