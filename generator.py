@@ -6,6 +6,8 @@ import itertools
 
 from network.connections import VlanIPv4Connections, VlanIPv4Object
 
+#from config.jsonparser import ParseFile
+
 
 def gen_vlan_connections(
     vlan_names: list[str], destination_ports: list[tuple[int, str]]
@@ -36,15 +38,6 @@ def gen_vlan_connections(
 
 
 if __name__ == "__main__":
-    # configtemplate = [
-    #     {
-    #         "vlanname": "clients",
-    #         "innercoverage": 15,
-    #         "outercoverage": 25,
-    #         "innerports": [((445, "smb"), (3389, "rdp"))],
-    #         "outerports": [(80, "http"), (389, "ldap")],
-    #     }
-    # ]
     VLAN_NAMES = [
         "clients",
         "servers",
@@ -103,12 +96,18 @@ if __name__ == "__main__":
 
     if args.config:
         configuration_file = args.config
+        #todo parse config
     if args.mode:
         generation_mode = args.mode
 
     if args.selectedsubparser:
         if args.selectedsubparser == 'plain':
-            print('plain')
+            if generation_mode == 'inner':
+                pass
+            elif generation_mode == 'outer':
+                pass
+            elif generation_mode == 'all':
+                pass
         elif args.selectedsubparser == 'time':
             print('Command not implemented')
         elif args.selectedsubparser == 'apps':

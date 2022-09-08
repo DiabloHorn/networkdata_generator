@@ -1,0 +1,30 @@
+[
+    {
+        "vlanname": "clients",
+        "innercoverage": 5,
+        "outercoverage": 70,
+        "tcpinnerports": [[3389, "rdp"]],
+        "tcpouterports": [[445, "http"], [389, "ldap"]]
+    },
+    {
+        "vlanname": "servers",
+        "innercoverage": 65,
+        "outercoverage": 35,
+        "tcpinnerports": [[445, "smb"], [1433, "mssql"]],
+        "tcpouterports": [[80, "http"], [443, "https"]]
+    },
+    {
+        "vlanname": "mgmt",
+        "innercoverage": 0,
+        "outercoverage": 100,
+        "tcpinnerports": [],
+        "tcpouterports": [[80, "http"], [389, "ldap"]]
+    },
+    {
+        "vlanname": "dmz",
+        "innercoverage": 10,
+        "outercoverage": 45,
+        "tcpinnerports": [[445, "smb"], [3306, "mysql"]],
+        "tcpouterports": [[80, "http"], [443, "https"]]
+    }     
+]
