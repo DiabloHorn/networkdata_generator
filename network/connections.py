@@ -1,9 +1,9 @@
 """Module containing logic for vlan and connection objects
 """
-import random
-import math
-import logging
 import ipaddress
+import logging
+import math
+import random
 
 gnd_logger = logging.getLogger("networkdata_generator")
 console_handler = logging.StreamHandler()
