@@ -4,6 +4,7 @@
 import argparse
 import itertools
 import logging
+import sys
 
 from lib_networkdatagenerator.base_logger.mylogger import gnd_logger
 from lib_networkdatagenerator.config.jsonparser import ParseConfigFile
@@ -100,6 +101,9 @@ if __name__ == "__main__":
         "full", help="Generates connections with timestamps & application information"
     )
 
+    if len(sys.argv)==1:
+        parser.print_help(sys.stderr)
+        sys.exit(1)
     args = parser.parse_args()
     if args.loglevel:
         gnd_logger.setLevel(args.loglevel)

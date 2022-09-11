@@ -2,10 +2,19 @@
 Sometimes you need to have a bunch of connection information to experiment with, but it just isn't there.
 This tiny project aims to do exactly that.
 
+# Running the tool
+For now the tool only supports the ```plain``` mode of which you can see an example in the 'Example output' section of this readme.
+
+## Plain mode
+You can determine if it should generate only connections within the VLAN, between VLANs or all of them:
+
+```python generator_cli.py --mode inner plain```
+
+
 # Example output
 The following is example output
 
-## Connections only
+## plain mode
 ```
 {'srchost': '219.64.120.76', 'dsthost': '68.206.89.177', 'srcport': 64878, 'dstport': 3389}
 {'srchost': '219.64.120.13', 'dsthost': '68.206.89.162', 'srcport': 63219, 'dstport': 3389}
