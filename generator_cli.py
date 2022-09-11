@@ -9,10 +9,8 @@ import sys
 
 from lib_networkdatagenerator.base_logger.mylogger import gnd_logger
 from lib_networkdatagenerator.config.jsonparser import ParseConfigFile
-from lib_networkdatagenerator.network.connections import (
-    VlanIPv4Connections,
-    VlanIPv4Object,
-)
+from lib_networkdatagenerator.network.connections import (VlanIPv4Connections,
+                                                          VlanIPv4Object)
 
 
 def gen_plain_inner(vlan_objects: list[dict]):
