@@ -1,8 +1,8 @@
 import pytest
 
-from network.connections import NetworkHelper
-from network.connections import VlanIPv4Object
-from network.connections import VlanIPv4Connections
+from lib_networkdatagenerator.network.connections import NetworkHelper
+from lib_networkdatagenerator.network.connections import VlanIPv4Object
+from lib_networkdatagenerator.network.connections import VlanIPv4Connections
 
 def test_get_src_port():
     portvalue = NetworkHelper.get_src_port()

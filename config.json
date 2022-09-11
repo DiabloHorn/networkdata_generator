@@ -26,5 +26,12 @@
         "outercoverage": 45,
         "tcpinnerports": [[445, "smb"], [3306, "mysql"]],
         "tcpouterports": [[80, "http"], [443, "https"]]
-    }     
+    },
+    {
+        "vlanname": "vault",
+        "innercoverage": 10,
+        "outercoverage": 45,
+        "tcpinnerports": [[445, "smb"], [3306, "mysql"]],
+        "tcpouterports": []
+    }  
 ]

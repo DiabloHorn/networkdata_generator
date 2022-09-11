@@ -1,19 +1,11 @@
 """Module containing logic for vlan and connection objects
 """
 import ipaddress
-import logging
 import math
 import random
+from typing import Iterator
 
-gnd_logger = logging.getLogger("networkdata_generator")
-console_handler = logging.StreamHandler()
-console_handler.setFormatter(
-    logging.Formatter(
-        "[%(asctime)s::%(filename)s::%(funcName)s] %(message)s", "%Y-%m-%d %H:%M:%S"
-    )
-)
-gnd_logger.addHandler(console_handler)
-gnd_logger.setLevel(logging.WARNING)
+from lib_networkdatagenerator.base_logger.mylogger import gnd_logger
 
 
 class NetworkHelper:
@@ -48,14 +40,14 @@ class VlanIPv4Object:
             innercoverage (int, optional): Percentage of hosts in the vlan connecting WITHIN the same vlan. Defaults to 15.
             outercoverage (int, optional): Percentage of hosts in the vlan connecting to OTHER vlans. Defaults to 25.
         """
-        self.vlan_name = vlanname
-        self.vlan_innercoverage = innercoverage
-        self.vlan_outercoverage = outercoverage
-        self.vlan_id = None
-        self.vlan_ipv4range = None
+        self.vlan_name:str = vlanname
+        self.vlan_innercoverage:int = innercoverage
+        self.vlan_outercoverage:int = outercoverage
+        self.vlan_id:int = 0
+        self.vlan_ipv4range:ipaddress.IPv4Network
         self._gen_vlanid()
         self._gen_vlanrange(networkmask)
-        self.vlan_numhosts = len(list(self.vlan_ipv4range.hosts()))
+        self.vlan_numhosts:int = len(list(self.vlan_ipv4range.hosts()))
 
     def _gen_vlanid(self, start: int = 1, end: int = 10000) -> None:
         """Generate a random vlan id
@@ -135,7 +127,7 @@ class VlanIPv4Connections:
         self,
         srcvlan: VlanIPv4Object,
         dstvlan: VlanIPv4Object,
-        dstports: list[tuple[int, str]],
+        dstports: list[list],
         innerconnections: bool = True,
     ) -> None:
         """Instantiate connection object fields
@@ -143,19 +135,19 @@ class VlanIPv4Connections:
         Args:
             srcvlan (VlanIPv4Object): The source vlan
             dstvlan (VlanIPv4Object): The destination vlan, can be the same if innerconnections is set to True
-            dstports (list[tuple[int,str]]): The list of ports to use for outgoing connection. List consists of tuples (portnumber:int, servicename:str)
+            dstports (list[list[int,str]]): The list of ports to use for outgoing connection. List consists of lists (portnumber:int, servicename:str)
             innerconnections (bool, optional): Determines if connections are generated between hosts IN the vlan or from hosts in the vlan to OTHER vlans. Defaults to True.
         """
-        self._srcvlan = srcvlan
-        self._dstvlan = dstvlan
-        self._dstports = dstports
-        self._innerconnections = innerconnections
+        self._srcvlan:VlanIPv4Object = srcvlan
+        self._dstvlan:VlanIPv4Object = dstvlan
+        self._dstports:list[list] = dstports
+        self._innerconnections:bool = innerconnections
 
-    def _get_host_pairs(self) -> list[tuple]:
+    def _get_host_pairs(self) -> list[tuple[ipaddress.IPv4Address,ipaddress.IPv4Address]]:
         """Generates the source,destination host pairs
 
         Returns:
-            list[tuple]: A list of tuples containing source and destination hosts
+            list[tuple[ipaddress.IPv4Address,ipaddress.IPv4Address]]: A list of tuples containing source and destination hosts
         """
         ipv4hosts = []
         totalhosts = 0
@@ -181,17 +173,17 @@ class VlanIPv4Connections:
             ipv4hosts.append((srchost, dsthost))
         return ipv4hosts
 
-    def _get_dst_port(self) -> tuple[int, str]:
+    def _get_dst_port(self) -> list[list]:
         """Get a random port from the list of destination ports
 
         Returns:
-            tuple[int,str]: The randomly chosen destination tuple
+            list[int,str]: The randomly chosen destination list
         """
         maxport = len(self._dstports)
         rnd = random.randrange(0, maxport)
         return self._dstports[rnd]
 
-    def get_host_connections(self) -> dict:
+    def get_host_connections(self) -> Iterator[dict]:
         """Generates the connections for the vlan hosts
 
         Returns:

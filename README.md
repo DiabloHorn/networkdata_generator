@@ -22,3 +22,8 @@ The following is example output
 You can run the tests like this:
 
 ```python -m pytest tests/```
+
+# MyPy
+You check type annotations & hints with:
+
+```mypy generator_cli.py lib_networkdatagenerator/```
