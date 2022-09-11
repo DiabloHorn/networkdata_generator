@@ -3,13 +3,16 @@
 """
 import argparse
 import itertools
+import json
 import logging
 import sys
 
 from lib_networkdatagenerator.base_logger.mylogger import gnd_logger
 from lib_networkdatagenerator.config.jsonparser import ParseConfigFile
-from lib_networkdatagenerator.network.connections import (VlanIPv4Connections,
-                                                          VlanIPv4Object)
+from lib_networkdatagenerator.network.connections import (
+    VlanIPv4Connections,
+    VlanIPv4Object,
+)
 
 
 def gen_plain_inner(vlan_objects: list[dict]):
@@ -19,10 +22,15 @@ def gen_plain_inner(vlan_objects: list[dict]):
         vlan_objects (list[dict]): A VLAN configuration object
     """
     for vln in vlan_objects:
-        vlan = VlanIPv4Object(vln["vlanname"])
+        vlan = VlanIPv4Object(
+            vlanname=vln["vlanname"],
+            networkmask=vln["networkmask"],
+            innercoverage=vln["innercoverage"],
+            outercoverage=vln["outercoverage"],
+        )
         vlaninnerconnections = VlanIPv4Connections(vlan, vlan, vln["tcpinnerports"])
         for conn in vlaninnerconnections.get_host_connections():
-            print(conn)
+            print(json.dumps(conn))
 
 
 def gen_plain_outer(vlan_objects: list[dict]):
@@ -34,14 +42,24 @@ def gen_plain_outer(vlan_objects: list[dict]):
     for vlanobject in itertools.permutations(vlan_objects, 2):
         if not vlanobject[0]["tcpouterports"]:
             continue
-        srcvlan = VlanIPv4Object(vlanobject[0]["vlanname"])
-        dstvlan = VlanIPv4Object(vlanobject[1]["vlanname"])
+        srcvlan = VlanIPv4Object(
+            vlanname=vlanobject[0]["vlanname"],
+            networkmask=vlanobject[0]["networkmask"],
+            innercoverage=vlanobject[0]["innercoverage"],
+            outercoverage=vlanobject[0]["outercoverage"],
+        )
+        dstvlan = VlanIPv4Object(
+            vlanname=vlanobject[1]["vlanname"],
+            networkmask=vlanobject[1]["networkmask"],
+            innercoverage=vlanobject[1]["innercoverage"],
+            outercoverage=vlanobject[1]["outercoverage"],
+        )
 
         vlaninnerconnections = VlanIPv4Connections(
             srcvlan, dstvlan, vlanobject[0]["tcpouterports"], innerconnections=False
         )
         for conn in vlaninnerconnections.get_host_connections():
-            print(conn)
+            print(json.dumps(conn))
 
 
 if __name__ == "__main__":
@@ -101,7 +119,7 @@ if __name__ == "__main__":
         "full", help="Generates connections with timestamps & application information"
     )
 
-    if len(sys.argv)==1:
+    if len(sys.argv) == 1:
         parser.print_help(sys.stderr)
         sys.exit(1)
     args = parser.parse_args()

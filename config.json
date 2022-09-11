@@ -1,34 +1,39 @@
 [
     {
         "vlanname": "clients",
-        "innercoverage": 5,
+        "networkmask": "24",
+        "innercoverage": 45,
         "outercoverage": 70,
-        "tcpinnerports": [[3389, "rdp"]],
-        "tcpouterports": [[445, "http"], [389, "ldap"]]
+        "tcpinnerports": [[135,"smb"],[139,"smb"],[3389, "rdp"]],
+        "tcpouterports": [[445, "http"], [389, "ldap"],[80,"http"],[443,"https"]]
     },
     {
         "vlanname": "servers",
+        "networkmask": "24",        
         "innercoverage": 65,
-        "outercoverage": 35,
-        "tcpinnerports": [[445, "smb"], [1433, "mssql"]],
+        "outercoverage": 80,
+        "tcpinnerports": [[445, "smb"], [1433, "mssql"], [3306,"mysql",[23,"telnet"]]],
         "tcpouterports": [[80, "http"], [443, "https"]]
     },
     {
         "vlanname": "mgmt",
+        "networkmask": "25",        
         "innercoverage": 0,
         "outercoverage": 100,
         "tcpinnerports": [],
-        "tcpouterports": [[80, "http"], [389, "ldap"]]
+        "tcpouterports": [[80, "http"], [389, "ldap"],[3389,"rdp"],[5985,"winrm"]]
     },
     {
         "vlanname": "dmz",
+        "networkmask": "24",        
         "innercoverage": 10,
-        "outercoverage": 45,
+        "outercoverage": 80,
         "tcpinnerports": [[445, "smb"], [3306, "mysql"]],
         "tcpouterports": [[80, "http"], [443, "https"]]
     },
     {
         "vlanname": "vault",
+        "networkmask": "24",        
         "innercoverage": 10,
         "outercoverage": 45,
         "tcpinnerports": [[445, "smb"], [3306, "mysql"]],

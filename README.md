@@ -26,6 +26,10 @@ The following is example output
 {'srchost': '92.9.15.246', 'dsthost': '118.220.234.36', 'srcport': 57648, 'dstport': 3389}
 {'srchost': '92.9.15.67', 'dsthost': '118.220.234.24', 'srcport': 64662, 'dstport': 445}
 ```
+# Convert to yED image
+The output from this tool can be used as input for other tools. The following one liner will generate a CSV format that you can then import to Excel and then import into yED
+
+```python generator_cli.py plain | jq -r '[.srchost,.dsthost,.dstport] | join(",")' > geninput.csv```
 
 # PyTest
 You can run the tests like this:
